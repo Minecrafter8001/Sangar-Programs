@@ -27,31 +27,33 @@ do
   stopy = validateY(args[2], starty, starty + 32, math.min(starty + 32, 31))
 end
 
-component.hologram.clear()
-for x=ox,sx+ox do
-  for z=oz,sz+oz do
-    local hx, hz = 1 + x - ox, 1 + z - oz
-    local column = component.geolyzer.scan(x, z, false)
-    for y=1,1+stopy-starty do
-      local color = 0
-      if column then
-        local hardness = column[y + starty + 32]
-        if hardness == 0 or not hardness then
-          color = 0
-        elseif hardness < 3 then
-          color = 2
-        elseif hardness < 100 then
-          color = 1
-        else
-          color = 3
-        end
-      end
-      if component.hologram.maxDepth() > 1 then
-        component.hologram.set(hx, y, hz, color)
-      else
-        component.hologram.set(hx, y, hz, math.min(color, 1))
-      end
-    end
-    os.sleep(0)
-  end
+while true
+ for x=ox,sx+ox do
+   for z=oz,sz+oz do
+     local hx, hz = 1 + x - ox, 1 + z - oz
+     local column = component.geolyzer.scan(x, z, false)
+     for y=1,1+stopy-starty do
+       local color = 0
+       if column then
+         local hardness = column[y + starty + 32]
+         if hardness == 0 or not hardness then
+           color = 0
+         elseif hardness < 3 then
+           color = 2
+         elseif hardness < 100 then
+           color = 1
+         else
+           color = 3
+         end
+       end
+       if component.hologram.maxDepth() > 1 then
+         component.hologram.set(hx, y, hz, color)
+       else
+         component.hologram.set(hx, y, hz, math.min(color, 1))
+       end
+     end
+     os.sleep(0)
+   end
+ end
+os.sleep(5)
 end
